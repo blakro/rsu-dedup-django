@@ -21,6 +21,7 @@ from datetime import datetime
 
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
+from django.utils import timezone as django_timezone
 
 from registre.models import Commune, Menage, Membre
 from registre.services.rapprochement import renseigner_champs_derives
@@ -47,13 +48,16 @@ def _lire_booleen(valeur):
 
 
 def _lire_date(valeur):
+    """Parse une date de soumission KoBo (naïve, heure locale) et la rend
+    consciente du fuseau horaire (USE_TZ=True, TIME_ZONE=Africa/Niamey)."""
     valeur = (valeur or "").strip()
     if not valeur:
         return None
     try:
-        return datetime.strptime(valeur, FORMAT_DATE_SOUMISSION)
+        date_naive = datetime.strptime(valeur, FORMAT_DATE_SOUMISSION)
     except ValueError:
         return None
+    return django_timezone.make_aware(date_naive)
 
 
 class Command(BaseCommand):
