@@ -19,14 +19,8 @@ jobs:
       - name: Installer les dépendances
         run: pip install -r requirements.txt
 
-      - name: Générer les migrations
-        run: python manage.py makemigrations registre
-
-      - name: Publier les migrations générées
-        uses: actions/upload-artifact@v4
-        with:
-          name: migrations
-          path: registre/migrations/*.py
+      - name: Vérifier qu'aucun modèle n'a été modifié sans migration
+        run: python manage.py makemigrations registre --check --dry-run
 
       - name: Appliquer les migrations
         run: python manage.py migrate
