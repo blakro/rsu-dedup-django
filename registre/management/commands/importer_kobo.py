@@ -4,9 +4,8 @@ Lit un export CSV de soumissions KoBoToolbox et crée ou met à jour les
 ménages et leurs membres correspondants.
 
 Les champs dérivés du ménage (nom_normalise, prenom_normalise, cle_blocage)
-ne sont PAS calculés ici : ils restent vides et seront renseignés par le
-service de rapprochement (registre/services/rapprochement.py), qui n'existe
-pas encore à ce stade du projet (voir CLAUDE.md, rythme de travail).
+sont calculés à l'import, pas à la volée, via le service de rapprochement
+(registre/services/rapprochement.py).
 
 La commune de chaque ménage doit déjà exister en base (via l'admin ou un
 fixture) : cet import ne crée pas de Commune.
@@ -24,6 +23,7 @@ from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 
 from registre.models import Commune, Menage, Membre
+from registre.services.rapprochement import renseigner_champs_derives
 
 # Nombre maximal de membres pris en charge par ménage dans l'export CSV
 # (colonnes membre_1_*, membre_2_*, ... membre_N_*).
@@ -131,6 +131,8 @@ class Command(BaseCommand):
                 "date_soumission": _lire_date(ligne.get("date_soumission")),
             },
         )
+        renseigner_champs_derives(menage)
+        menage.save(update_fields=["nom_normalise", "prenom_normalise", "cle_blocage"])
         return menage, cree, False
 
     def _importer_membres(self, menage, ligne):
