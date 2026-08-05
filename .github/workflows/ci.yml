@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+
+      - name: Générer les migrations
+        run: python manage.py makemigrations registre
+
+      - name: Publier les migrations générées
+        uses: actions/upload-artifact@v4
+        with:
+          name: migrations
+          path: registre/migrations/*.py
+
+      - name: Appliquer les migrations
+        run: python manage.py migrate
+
+      - name: Vérifier le projet (manage.py check)
+        run: python manage.py check
+
+      - name: Lancer les tests
+        run: python manage.py test registre
