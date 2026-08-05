@@ -25,7 +25,10 @@ SECRET_KEY = "django-insecure-demonstrateur-unicef-niger-rsu-dedup-a-changer-en-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# Démonstrateur jamais déployé publiquement : accédé depuis localhost, un
+# Codespace (URL de forwarding dynamique) ou la CI (host "testserver"), donc
+# pas de liste fixe de hosts à maintenir.
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
