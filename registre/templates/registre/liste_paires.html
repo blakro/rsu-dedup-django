@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Paires suspectes — RSU Niger</title>
+    <link rel="stylesheet" href="{% static 'registre/style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Paires de ménages suspectées de doublon</h1>
+        <p class="sous-titre">Registre Social Unifié — écran d'arbitrage</p>
+    </header>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="message message--{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <nav class="filtres">
+        <a href="{% url 'registre:liste_paires' %}" class="{% if not statut_actif %}actif{% endif %}">Toutes</a>
+        {% for valeur, libelle in statuts %}
+            <a href="?statut={{ valeur }}" class="{% if statut_actif == valeur %}actif{% endif %}">{{ libelle }}</a>
+        {% endfor %}
+    </nav>
+
+    {% if paires %}
+    <table>
+        <thead>
+            <tr>
+                <th>Score</th>
+                <th>Ménage A</th>
+                <th>Ménage B</th>
+                <th>Statut</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for paire in paires %}
+            <tr>
+                <td class="score">{{ paire.score }}</td>
+                <td>{{ paire.menage_a.nom_chef }} {{ paire.menage_a.prenom_chef }}
+                    <span class="detail">({{ paire.menage_a.commune.nom }})</span></td>
+                <td>{{ paire.menage_b.nom_chef }} {{ paire.menage_b.prenom_chef }}
+                    <span class="detail">({{ paire.menage_b.commune.nom }})</span></td>
+                <td><span class="badge badge--{{ paire.statut }}">{{ paire.get_statut_display }}</span></td>
+                <td><a href="{% url 'registre:arbitrage' paire.pk %}">Arbitrer</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p class="vide">Aucune paire suspecte pour ce filtre.</p>
+    {% endif %}
+</body>
+</html>

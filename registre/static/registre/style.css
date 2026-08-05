@@ -1,0 +1,201 @@
+/* Feuille de style unique, écrite à la main, sans framework.
+   Outil d'arbitrage pour un agent du dispositif national : sobriété avant tout. */
+
+:root {
+    --couleur-texte: #1f2933;
+    --couleur-fond: #f7f8fa;
+    --couleur-bordure: #d3d8de;
+    --couleur-accent: #1b4965;
+    --couleur-divergent: #fff3cd;
+    --couleur-doublon: #b3261e;
+    --couleur-distinct: #2e7d32;
+    --couleur-revoir: #616161;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 2rem;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: var(--couleur-texte);
+    background: var(--couleur-fond);
+    line-height: 1.5;
+}
+
+header h1 {
+    margin-bottom: 0.25rem;
+    font-size: 1.5rem;
+}
+
+.sous-titre {
+    margin-top: 0;
+    color: #52606d;
+}
+
+.sous-titre a {
+    color: var(--couleur-accent);
+}
+
+nav.filtres {
+    margin: 1rem 0;
+}
+
+nav.filtres a {
+    display: inline-block;
+    margin-right: 0.5rem;
+    padding: 0.3rem 0.75rem;
+    border: 1px solid var(--couleur-bordure);
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--couleur-texte);
+}
+
+nav.filtres a.actif {
+    background: var(--couleur-accent);
+    color: white;
+    border-color: var(--couleur-accent);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    margin-bottom: 1.5rem;
+}
+
+th, td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--couleur-bordure);
+    text-align: left;
+    vertical-align: top;
+}
+
+table.comparaison th:first-child {
+    width: 20%;
+    background: #eef1f4;
+}
+
+tr.divergent td {
+    background: var(--couleur-divergent);
+}
+
+.detail {
+    color: #7b8794;
+    font-size: 0.9em;
+}
+
+.score {
+    font-weight: bold;
+}
+
+.badge {
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.85em;
+    color: white;
+    white-space: nowrap;
+}
+
+.badge--en_attente { background: var(--couleur-revoir); }
+.badge--doublon_confirme { background: var(--couleur-doublon); }
+.badge--menages_distincts { background: var(--couleur-distinct); }
+
+.vide {
+    color: #7b8794;
+    font-style: italic;
+}
+
+.motifs {
+    background: white;
+    border: 1px solid var(--couleur-bordure);
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+}
+
+.composition {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.menage-membres {
+    flex: 1;
+    background: white;
+    border: 1px solid var(--couleur-bordure);
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+}
+
+.menage-membres ul {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.alerte {
+    color: white;
+    background: var(--couleur-doublon);
+    padding: 0 0.4rem;
+    border-radius: 3px;
+    font-size: 0.8em;
+    margin-left: 0.4rem;
+}
+
+.arbitrage-formulaire {
+    background: white;
+    border: 1px solid var(--couleur-bordure);
+    border-radius: 4px;
+    padding: 1rem;
+    max-width: 40rem;
+}
+
+.arbitrage-formulaire label {
+    display: block;
+    margin-top: 0.75rem;
+    font-weight: 600;
+}
+
+.arbitrage-formulaire input,
+.arbitrage-formulaire textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--couleur-bordure);
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+.actions {
+    margin-top: 1.25rem;
+    display: flex;
+    gap: 0.75rem;
+}
+
+.bouton {
+    padding: 0.6rem 1.1rem;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.bouton--doublon { background: var(--couleur-doublon); }
+.bouton--distinct { background: var(--couleur-distinct); }
+.bouton--revoir { background: var(--couleur-revoir); }
+
+.messages {
+    list-style: none;
+    padding: 0;
+}
+
+.message {
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+}
+
+.message--success { background: #d7f0d9; color: #1b4332; }
+.message--error { background: #fde2e1; color: #7a271a; }

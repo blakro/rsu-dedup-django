@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Arbitrage paire #{{ paire.pk }} — RSU Niger</title>
+    <link rel="stylesheet" href="{% static 'registre/style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Arbitrage de la paire #{{ paire.pk }}</h1>
+        <p class="sous-titre">
+            <a href="{% url 'registre:liste_paires' %}">&larr; Retour à la liste</a>
+            — score {{ paire.score }}/100 — statut actuel : {{ paire.get_statut_display }}
+        </p>
+    </header>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="message message--{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <section class="motifs">
+        <h2>Motifs du rapprochement</h2>
+        <p>{{ paire.motifs }}</p>
+    </section>
+
+    <table class="comparaison">
+        <thead>
+            <tr>
+                <th>Champ</th>
+                <th>Ménage A — {{ paire.menage_a.submission_id }}</th>
+                <th>Ménage B — {{ paire.menage_b.submission_id }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for champ in champs %}
+            <tr class="{% if champ.divergent %}divergent{% endif %}">
+                <th>{{ champ.libelle }}</th>
+                <td>{{ champ.valeur_a|default:"—" }}</td>
+                <td>{{ champ.valeur_b|default:"—" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="composition">
+        <div class="menage-membres">
+            <h2>Composition — Ménage A</h2>
+            {% if membres_a %}
+            <ul>
+                {% for membre in membres_a %}
+                <li>{{ membre.nom_complet }} — {{ membre.lien_parente }},
+                    {{ membre.age|default:"âge inconnu" }} ans
+                    {% if membre.mas %}<span class="alerte">MAS</span>{% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="vide">Aucun membre enregistré.</p>
+            {% endif %}
+        </div>
+        <div class="menage-membres">
+            <h2>Composition — Ménage B</h2>
+            {% if membres_b %}
+            <ul>
+                {% for membre in membres_b %}
+                <li>{{ membre.nom_complet }} — {{ membre.lien_parente }},
+                    {{ membre.age|default:"âge inconnu" }} ans
+                    {% if membre.mas %}<span class="alerte">MAS</span>{% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="vide">Aucun membre enregistré.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <form method="post" class="arbitrage-formulaire">
+        {% csrf_token %}
+        <label for="arbitre_par">Votre identifiant</label>
+        <input type="text" id="arbitre_par" name="arbitre_par" required value="{{ paire.arbitre_par }}">
+
+        <label for="commentaire">Commentaire (optionnel)</label>
+        <textarea id="commentaire" name="commentaire">{{ paire.commentaire }}</textarea>
+
+        <div class="actions">
+            <button type="submit" name="action" value="doublon_confirme" class="bouton bouton--doublon">
+                Doublon confirmé
+            </button>
+            <button type="submit" name="action" value="menages_distincts" class="bouton bouton--distinct">
+                Ménages distincts
+            </button>
+            <button type="submit" name="action" value="a_revoir" class="bouton bouton--revoir">
+                À revoir
+            </button>
+        </div>
+    </form>
+</body>
+</html>

@@ -36,3 +36,40 @@ jobs:
 
       - name: Lancer les tests
         run: python manage.py test registre
+
+      - name: Charger le jeu de données de démonstration
+        run: |
+          python manage.py loaddata registre/fixtures/communes_demo.json
+          python manage.py importer_kobo demo/menages_demo.csv
+          python manage.py rapprocher
+
+      - name: Vérifier les vues sur le jeu de données de démonstration
+        run: |
+          python manage.py shell <<'EOF'
+          from django.test import Client
+          from registre.models import PaireSuspecte
+
+          nb_paires = PaireSuspecte.objects.count()
+          assert nb_paires == 1, f"attendu 1 paire suspecte (coépouses), obtenu {nb_paires}"
+
+          client = Client()
+
+          reponse = client.get("/")
+          assert reponse.status_code == 200, reponse.status_code
+
+          paire = PaireSuspecte.objects.get()
+          reponse = client.get(f"/paires/{paire.pk}/")
+          assert reponse.status_code == 200, reponse.status_code
+
+          reponse = client.post(f"/paires/{paire.pk}/", {
+              "action": "doublon_confirme",
+              "arbitre_par": "ci-smoke-test",
+              "commentaire": "",
+          })
+          assert reponse.status_code == 302, reponse.status_code
+
+          paire.refresh_from_db()
+          assert paire.statut == PaireSuspecte.Statut.DOUBLON_CONFIRME, paire.statut
+
+          print("OK : liste et arbitrage répondent, 1 paire (coépouses), arbitrage fonctionnel.")
+          EOF

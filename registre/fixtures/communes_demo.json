@@ -1,0 +1,20 @@
+[
+    {
+        "model": "registre.commune",
+        "pk": "NE001_01_01",
+        "fields": {
+            "nom": "Agadez",
+            "departement": "NE001_01",
+            "region": "Agadez"
+        }
+    },
+    {
+        "model": "registre.commune",
+        "pk": "NE002_01_01",
+        "fields": {
+            "nom": "Diffa",
+            "departement": "NE002_01",
+            "region": "Diffa"
+        }
+    }
+]
