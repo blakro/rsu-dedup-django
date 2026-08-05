@@ -1,0 +1,11 @@
+{
+  "name": "rsu-dedup-django",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "postCreateCommand": "pip install -r requirements.txt && python manage.py makemigrations registre && python manage.py migrate",
+  "forwardPorts": [8000],
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-python.python"]
+    }
+  }
+}

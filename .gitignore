@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Environnement virtuel
+venv/
+
+# Django
+db.sqlite3
+*.log
+
+# Configuration locale / secrets
+.env
+
+# Exports (CSV KoBo, etc.)
+exports/
