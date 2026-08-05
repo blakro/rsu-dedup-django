@@ -4,8 +4,9 @@ Démonstrateur technique accompagnant une candidature de consultant national
 « Développement de bases de données » à l'UNICEF Niger (RSU / RRM).
 
 Le projet reprend en Django la chaîne construite dans le dépôt
-`kobo-rsu-niger` : import des soumissions KoBoToolbox, rapprochement
-d'identité des ménages, arbitrage humain des doublons.
+[`kobo-rsu-niger`](https://github.com/blakro/kobo-rsu-niger) : import des
+soumissions KoBoToolbox, rapprochement d'identité des ménages, arbitrage
+humain des doublons.
 
 **Contrainte dominante : le code doit être défendable en entretien
 technique.** Toute abstraction que l'auteur ne pourrait pas expliquer de
